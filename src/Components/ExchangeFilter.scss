@@ -1,0 +1,60 @@
+$page-color: rgb(204, 233, 204);
+$font: sans-serif;
+
+body {
+    background-color: $page-color;
+    font-family: $font;
+}
+
+.exchange-form {
+    width: 600px;
+
+    input {
+        display: none;
+    }
+    .exchange-value {
+        resize: none;
+        margin-left: 10px;
+        width: 100%;
+    }
+}
+
+.exchange-title {
+    margin-left: 10px;
+}
+
+.exchange-title + label {
+    margin-left: 10px;
+}
+
+.answer-checkbox {
+    display: none;
+}
+
+.answer-label {
+    padding: 10px;
+}
+
+.from-active, .to-active {
+    background-color: #ef5068;
+    transform: scale(1.1, 1.1);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.answer-label:hover {
+    cursor: pointer;
+}
+
+.exchange-filter {
+    margin-top: 25px;
+    display: flex;
+    .exchange-value, select {
+        padding: 10px;
+    }
+}
+
+.exchangeVallet {
+    width: 150px;
+}
