@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,19 +34,32 @@ function ExchangeFilter() {
       tmpFrom = document.querySelector('.from-active');
       finalFrom = tmpFrom.firstChild.value;
     } else if (e.target.name === 'to') {
-      tmpFrom = document.querySelector('.from-active');
+      tmpFrom = document.querySelector('.to-active');
       finalFrom = tmpFrom.firstChild.value;
-      setActualExchange(e.target.value);
+
+      const tmpCurrentVallet = document.querySelector('.exchangeVallet');
+      const currentVallet = tmpCurrentVallet.value;
+      const tmpCurrentFilter = document.querySelector('.to-active');
+      const currentFilter = tmpCurrentFilter.firstChild.value;
+
+      console.log('filters', filters, 'valletTypes', valletTypes, 'поиск в', currentVallet, 'фильтр по', currentFilter);
+
+      // setActualExchange(e.target.value);
+
       const elems = document.querySelectorAll('.to-active');
       [].forEach.call(elems, (el) => el.classList.remove('to-active'));
       e.target.closest('label').classList.toggle('to-active');
       setValletCategory((prev) => ({ ...prev, to: e.target.value }));
-      dispatch(resetState());
-      dispatch(typeFilter({ from: finalFrom, to: e.target.value }));
+      // dispatch(resetState());
+      // dispatch(typeFilter({ from: finalFrom, to: e.target.value }));
     }
   }
 
   function selectHandler(e) {
+    const filterTo = document.querySelectorAll('.to-active');
+    [].forEach.call(filterTo, (el) => el.classList.remove('to-active'));
+    const anchorTo = document.querySelector('.to');
+    anchorTo.nextSibling.classList.toggle('to-active');
     setActualExchange(e.target.value);
     dispatch(resetExchangeFilters());
     dispatch(exchangeVariants(e.target.value));
