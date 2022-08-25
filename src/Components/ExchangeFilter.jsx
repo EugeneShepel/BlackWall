@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
@@ -11,6 +12,7 @@ function ExchangeFilter() {
   const initialCategory = { from: 'Все', to: 'Все' };
   const [valletCategory, setValletCategory] = useState(initialCategory);
   const [actualExchange, setActualExchange] = useState();
+  const [filteredByType, setFilteredByType] = useState([]);
 
   const valletTypes = useSelector((state) => state.valletTypes);
   const filters = useSelector((state) => state.filters);
@@ -37,6 +39,11 @@ function ExchangeFilter() {
       tmpFrom = document.querySelector('.to-active');
       finalFrom = tmpFrom.firstChild.value;
 
+      const elems = document.querySelectorAll('.to-active');
+      [].forEach.call(elems, (el) => el.classList.remove('to-active'));
+      e.target.closest('label').classList.toggle('to-active');
+      setValletCategory((prev) => ({ ...prev, to: e.target.value }));
+
       const tmpCurrentVallet = document.querySelector('.exchangeVallet');
       const currentVallet = tmpCurrentVallet.value;
       const tmpCurrentFilter = document.querySelector('.to-active');
@@ -44,13 +51,15 @@ function ExchangeFilter() {
 
       console.log('filters', filters, 'valletTypes', valletTypes, 'поиск в', currentVallet, 'фильтр по', currentFilter);
 
-      // setActualExchange(e.target.value);
+      dispatch(resetState());
+      const output = filters.find((el) => el.from.code === currentVallet);
+      const findKey = valletTypes.data.find((el) => el[currentFilter]);
+      const filteredOutput = output.to.filter((el) => findKey[currentFilter].includes(el.code));
 
-      const elems = document.querySelectorAll('.to-active');
-      [].forEach.call(elems, (el) => el.classList.remove('to-active'));
-      e.target.closest('label').classList.toggle('to-active');
-      setValletCategory((prev) => ({ ...prev, to: e.target.value }));
-      // dispatch(resetState());
+      setFilteredByType(filteredOutput);
+
+      // console.log('output', output, 'key', findKey, 'result', a);
+
       // dispatch(typeFilter({ from: finalFrom, to: e.target.value }));
     }
   }
@@ -124,14 +133,21 @@ function ExchangeFilter() {
         <textarea disabled className="exchange-value" name="" rows="1" value="12345" />
         <select className="exchangeVallet">
 
-          { filters.length > 1
+          {/* { filters.length > 1
             ? filters
             && filters.filter((el) => (el.from.code === valletTypes.data[0][valletCategory.from][0]))[0].to.map((el) => (<option key={uuid()} value="">{el.code}</option>))
-            : filters && filters[0].to.map((el) => (
+            : filteredByType && filteredByType.map((el) => (
               <option key={uuid()} value={el.code}>{el.code}</option>
-            ))}
+            ))} */}
+
+          {filteredByType.map((el) => (
+            <option key={uuid()} value={el.code}>{el.code}</option>
+          ))}
 
         </select>
+        {/* filters && filters[0].to.map((el) => (
+             <option key={uuid()} value={el.code}>{el.code}</option>
+        )) */}
       </div>
     </form>
   );
